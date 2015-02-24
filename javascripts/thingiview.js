@@ -358,8 +358,6 @@ Thingiview = function(containerId) {
   }
 
   rotateLoop = function() {
-    // targetRotation += 0.01;
-    targetXRotation += 0.05;
     sceneLoop();
   }
 
