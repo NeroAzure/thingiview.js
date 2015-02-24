@@ -742,6 +742,10 @@ Thingiview = function(containerId) {
     }
   }
 
+  this.getGeometry = function() {
+    return geometry;
+  };
+
 };
 
 var STLGeometry = function(stlArray) {
