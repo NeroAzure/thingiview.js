@@ -31,10 +31,9 @@ Thingiloader = function(event) {
 
     workerFacadeMessage({'status':'message', 'content':'Downloading ' + url});  
     var file = this.load_binary_resource(url);
-    var reader = new BinaryReader(file);
 
     if (looksLikeBinary(reader)) {
-      this.loadSTLBinary(reader);
+      this.loadSTLBinary(file);
     } else {
       this.loadSTLString(file);
     }
@@ -70,8 +69,9 @@ Thingiloader = function(event) {
   };
 
   this.loadSTLBinary = function(STLBinary) {
+    var reader = new BinaryReader(STLBinary);
     workerFacadeMessage({'status':'message', 'content':'Parsing STL Binary...'});
-    workerFacadeMessage({'status':'complete', 'content':this.ParseSTLBinary(STLBinary)});
+    workerFacadeMessage({'status':'complete', 'content':this.ParseSTLBinary(reader)});
   };
 
   this.loadOBJString = function(OBJString) {
