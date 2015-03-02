@@ -31,6 +31,7 @@ Thingiloader = function(event) {
 
     workerFacadeMessage({'status':'message', 'content':'Downloading ' + url});  
     var file = this.load_binary_resource(url);
+    var reader = new BinaryReader(file);
 
     if (looksLikeBinary(reader)) {
       this.loadSTLBinary(file);
