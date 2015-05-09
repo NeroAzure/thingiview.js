@@ -92,6 +92,11 @@ Thingiview = function(containerId) {
     progressBar.style.left = '0px';
     progressBar.style.backgroundColor = 'transparent';
     progressBar.style.padding = '5px';
+    progressBar.style.paddingTop = '200px';
+    progressBar.style.width = '100%';
+    progressBar.style.color = '#FFF';
+    progressBar.style.fontSize = '1.2em';
+    progressBar.style.textAlign = 'center';
     progressBar.style.display = 'none';
     progressBar.style.overflow = 'visible';
     progressBar.style.whiteSpace = 'nowrap';
@@ -140,7 +145,7 @@ Thingiview = function(containerId) {
     // renderer.setSize(container.innerWidth, container.innerHeight);
 
   	renderer.setSize(width, height);
-    renderer.domElement.style.backgroundColor = backgroundColor;
+    //renderer.domElement.style.backgroundColor = backgroundColor;
   	container.appendChild(renderer.domElement);
 
     // stats = new Stats();

@@ -2,7 +2,13 @@ Thingiloader = function(event) {
   // Code from https://developer.mozilla.org/En/Using_XMLHttpRequest#Receiving_binary_data
   this.load_binary_resource = function(url) {
   	var req = new XMLHttpRequest();
-  	req.open('GET', url, false);
+    
+    req.addEventListener("progress", function(e) { 
+        var percentComplete = parseInt((e.loaded / e.total) * 100);
+        workerFacadeMessage({'status': 'message', 'content': 'Downloading: ' + percentComplete + '%'});  
+    }, false);
+    
+  	req.open('GET', url, true);
   	// The following line says we want to receive data as Binary and not as Unicode
   	req.overrideMimeType('text/plain; charset=x-user-defined');
   	req.send(null);
@@ -29,7 +35,7 @@ Thingiloader = function(event) {
       return reader.getSize() == predictedSize;
     };
 
-    workerFacadeMessage({'status':'message', 'content':'Downloading ' + url});  
+    workerFacadeMessage({'status':'message', 'content':'Downloading...'});
     var file = this.load_binary_resource(url);
     var reader = new BinaryReader(file);
 
@@ -41,19 +47,19 @@ Thingiloader = function(event) {
   };
 
   this.loadOBJ = function(url) {
-    workerFacadeMessage({'status':'message', 'content':'Downloading ' + url});  
+    workerFacadeMessage({'status':'message', 'content':'Downloading...'});
     var file = this.load_binary_resource(url);
     this.loadOBJString(file);
   };
 
   this.loadJSON = function(url) {
-    workerFacadeMessage({'status':'message', 'content':'Downloading ' + url});
+    workerFacadeMessage({'status':'message', 'content':'Downloading...'});
     var file = this.load_binary_resource(url);
     this.loadJSONString(file);
   };
   
   this.loadPLY = function(url) {
-    workerFacadeMessage({'status':'message', 'content':'Downloading ' + url});  
+    workerFacadeMessage({'status':'message', 'content':'Downloading...'});
   
     var file = this.load_binary_resource(url);
     
