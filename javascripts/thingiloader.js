@@ -1,20 +1,23 @@
 Thingiloader = function(event) {
   // Code from https://developer.mozilla.org/En/Using_XMLHttpRequest#Receiving_binary_data
-  this.load_binary_resource = function(url) {
+  this.load_binary_resource = function(url, callback) {
   	var req = new XMLHttpRequest();
     
-    req.addEventListener("progress", function(e) { 
+    req.onprogress = function(e) { 
         var percentComplete = parseInt((e.loaded / e.total) * 100);
         workerFacadeMessage({'status': 'message', 'content': 'Downloading: ' + percentComplete + '%'});  
-    }, false);
+    };
+    
+    req.onreadystatechange = function() {
+        if (req.readyState == 4 && req.status == 200) {
+            callback(req.responseText); // Another callback here
+        }
+    }; 
     
   	req.open('GET', url, true);
   	// The following line says we want to receive data as Binary and not as Unicode
   	req.overrideMimeType('text/plain; charset=x-user-defined');
   	req.send(null);
-  	if (req.status != 200) return '';
-
-  	return req.responseText;
   };
 
   this.loadSTL = function(url) {
@@ -36,14 +39,16 @@ Thingiloader = function(event) {
     };
 
     workerFacadeMessage({'status':'message', 'content':'Downloading...'});
-    var file = this.load_binary_resource(url);
-    var reader = new BinaryReader(file);
-
-    if (looksLikeBinary(reader)) {
-      this.loadSTLBinary(file);
-    } else {
-      this.loadSTLString(file);
-    }
+    this.load_binary_resource(url, function(file) {
+        var reader = new BinaryReader(file);
+        
+        if (looksLikeBinary(reader)) {
+            this.loadSTLBinary(file);
+        } else {
+            this.loadSTLString(file);
+        }
+    });
+    
   };
 
   this.loadOBJ = function(url) {
