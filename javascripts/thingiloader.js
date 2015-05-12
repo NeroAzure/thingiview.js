@@ -178,10 +178,6 @@ Thingiloader = function(event) {
             'status':'message',
             'content':'Parsing ' + (i+1) + ' of ' + count + ' polygons...'
           });
-        workerFacadeMessage({
-            'status':'progress',
-            'content':parseInt(i / count * 100) + '%'
-          });
       }
       
       // Skip the normal (3 single-precision floats)
