@@ -531,8 +531,8 @@ Thingiview = function(containerId) {
     loadObjectGeometry();
   }
 
-  this.loadSTL = function(url) {
-    scope.newWorker('loadSTL', url);
+  this.loadSTL = function(url, local) {
+    scope.newWorker('loadSTL', url, local);
   }
 
   this.loadOBJ = function(url) {
@@ -617,7 +617,7 @@ Thingiview = function(containerId) {
 
   this.newWorker = function(cmd, param) {
     scope.setRotation(false);
-  	
+    
     var worker = new WorkerFacade(thingiurlbase + '/thingiloader.js');
     
     worker.onmessage = function(event) {

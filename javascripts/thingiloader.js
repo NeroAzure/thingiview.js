@@ -20,7 +20,10 @@ Thingiloader = function(event) {
   	req.send(null);
   };
 
-  this.loadSTL = function(url, local) {
+  this.loadSTL = function(params) {
+    var url = params["url"];
+    var local = params["local"];
+    
     var looksLikeBinary = function(reader) {
       // STL files don't specify a way to distinguish ASCII from binary.
       // The usual way is checking for "solid" at the start of the file --
@@ -54,7 +57,6 @@ Thingiloader = function(event) {
         workerFacadeMessage({'status':'message', 'content':'Downloading...'});
         this.load_binary_resource(url, parseFile);
     }
-    
   };
 
   this.loadOBJ = function(url) {
