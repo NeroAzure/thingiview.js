@@ -20,7 +20,7 @@ Thingiloader = function(event) {
   	req.send(null);
   };
 
-  this.loadSTL = function(url) {
+  this.loadSTL = function(url, local) {
     var looksLikeBinary = function(reader) {
       // STL files don't specify a way to distinguish ASCII from binary.
       // The usual way is checking for "solid" at the start of the file --
@@ -37,9 +37,8 @@ Thingiloader = function(event) {
       var predictedSize = 80 /* header */ + 4 /* count */ + 50 * count;
       return reader.getSize() == predictedSize;
     };
-
-    workerFacadeMessage({'status':'message', 'content':'Downloading...'});
-    this.load_binary_resource(url, function(file) {
+    
+    var parseFile = function(file) {
         var reader = new BinaryReader(file);
         
         if (looksLikeBinary(reader)) {
@@ -47,7 +46,14 @@ Thingiloader = function(event) {
         } else {
             this.loadSTLString(file);
         }
-    });
+    };
+    
+    if (local === true) {
+        parseFile(url);
+    } else {
+        workerFacadeMessage({'status':'message', 'content':'Downloading...'});
+        this.load_binary_resource(url, parseFile);
+    }
     
   };
 
